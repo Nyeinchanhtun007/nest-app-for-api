@@ -1,2 +1,155 @@
+//github
 F76C-02D8
+
+
+
+
+
+complete list of useful NestJS CLI commands you can use to create, manage, and run your projects effectively.
+---
+Project Commands
+Command - Description
+nest new <project-name> - Create a new NestJS project
+nest info - Display environment information about NestJS, Node, OS, and package versions
+nest update - Update NestJS dependencies to the latest versions
+nest upgrade - Alias for nest update
+nest build - Compile the NestJS app into the dist/ directory
+nest start - Run the application (you can add options like --watch)
+nest start --watch - Automatically restart on file changes
+nest start --debug - Start the app in debug mode
+nest start --entryFile <file> - Specify a custom entry file (default: main.ts)
+---
+Generate (Scaffolding) Commands
+Command - Description
+nest g module <name> - Generate a new module
+nest g controller <name> - Generate a new controller
+nest g service <name> - Generate a new service
+nest g provider <name> - Generate a provider
+nest g middleware <name> - Generate middleware
+nest g interceptor <name> - Generate interceptor
+nest g pipe <name> - Generate a custom pipe
+nest g gateway <name> - Generate a WebSocket gateway
+nest g guard <name> - Generate an authentication guard
+nest g filter <name> - Generate an exception filter
+nest g class <name> - Generate a generic class file
+nest g interface <name> - Generate a TypeScript interface
+nest g decorator <name> - Generate a custom decorator
+nest g resolver <name> - Generate GraphQL resolver
+nest g resource <name> - Generate a CRUD resource (Controller + Service + Module + DTOs)
+Alias: You can use nest generate or simply nest g (same thing).
+Example:
+nest g module users
+nest g controller users
+nest g service users
+---
+Testing Commands
+Command - Description
+nest test - Run unit tests
+nest test --watch - Run tests in watch mode
+nest test --coverage - Run tests and show code coverage
+nest e2e - Run end-to-end (E2E) tests
+---
+Custom & Advanced Commands
+Command - Description
+nest add <library> - Add a NestJS-compatible library (like @nestjs/swagger)
+nest generate library <name> - Generate a reusable library inside a monorepo
+nest generate application <name> - Create a new application in a monorepo workspace
+nest build <name> - Build a specific project in a monorepo
+nest start <name> - Start a specific project in a monorepo
+---
+Commonly Used Examples
+Create a new NestJS project
+nest new my-app
+Generate a new CRUD resource
+nest g resource products
+Generate individual pieces
+nest g module auth
+nest g controller auth
+nest g service auth
+Start development server
+nest start --watch
+
+
+//for valdation
+npm i --save class-validator class-transformer
+
+
+
+TypeORM Built-in Methods (Repository / EntityManager)
+1. save()
+→ Data ကို insert (သို့) update လုပ်တယ်။
+const user = new User();
+user.name = 'Kyaw Zin';
+user.email = 'kyaw@example.com';
+await userRepository.save(user);
+record မရှိရင် insert / id တူရင် update
+2. find()
+→ Table ထဲက record တွေကို array format ဖြင့် ပြန်ပေးတယ်။
+const users = await userRepository.find();
+const activeUsers = await userRepository.find({
+  where: { isActive: true },
+  order: { name: 'ASC' },
+  take: 10,
+});
+3. findOne()
+→ condition ဖြင့် record တစ်ခုကို ရယူတယ်။
+const user = await userRepository.findOne({ where: { id: 1 } });
+const user2 = await userRepository.findOneBy({ email: 'kyaw@example.com' });
+4. findBy()
+→ condition ဖြင့် multiple records ရယူတယ်။
+const users = await userRepository.findBy({ role: 'admin' });
+5. count()
+→ record အရေအတွက်ကို ရယူတယ်။
+const totalUsers = await userRepository.count();
+const activeCount = await userRepository.count({ where: { isActive: true } });
+6. insert()
+→ insert-only (update မလုပ်ပါ)
+await userRepository.insert({ name: 'John', email: 'john@example.com' });
+7. update()
+→ condition ဖြင့် update လုပ်တယ်။
+await userRepository.update({ id: 1 }, { name: 'Updated Name' });
+8. delete()
+→ condition ဖြင့် record ကို delete လုပ်တယ်။
+await userRepository.delete({ id: 1 });
+9. remove()
+→ entity object ကို directly delete လုပ်တယ်။
+const user = await userRepository.findOneBy({ id: 2 });
+await userRepository.remove(user);
+:warning: remove() သုံးချင်ရင် entity object လိုအပ်တယ်။
+10. create()
+→ entity instance အသစ်တစ်ခု create လုပ်တယ် (DB ထဲ မသွားသေးပါ)
+const user = userRepository.create({ name: 'Aung Aung', email: 'aung@example.com' });
+await userRepository.save(user);
+11. preload()
+→ update လုပ်ချင်တဲ့ data ကို DB record နဲ့ merge လုပ်တယ်။
+const user = await userRepository.preload({
+  id: 1,
+  name: 'New Name',
+});
+await userRepository.save(user);
+12. query()
+→ Raw SQL query run လုပ်တယ်။
+const result = await userRepository.query('SELECT * FROM users WHERE isActive = ?', [true]);
+13. createQueryBuilder()
+→ Complex query ရေးနိုင်တဲ့ method
+const users = await userRepository
+  .createQueryBuilder('user')
+  .where('user.isActive = :active', { active: true })
+  .orderBy('user.name', 'ASC')
+  .getMany();
+Summary Table
+Method	Description	CRUD
+save()	Insert or update	Create / Update
+insert()	Insert only	Create
+find()	Get all records	Read
+findOne()	Get one record	Read
+findBy()	Get many by condition	Read
+count()	Count records	Read
+update()	Update by condition	Update
+remove()	Remove by entity	Delete
+delete()	Delete by condition	Delete
+create()	Create instance (not saved)	Create
+preload()	Merge update data	Update
+query()	Run raw SQL	-
+createQueryBuilder()	Build complex queries	Read
 
